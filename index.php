@@ -1,10 +1,8 @@
 <?php
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
-
 require './vendor/autoload.php';
 require './includes/database.php';
-require './classes/user.class.php';
+require './includes/functions.user.php';
+require './includes/functions.products.php';
 
 $app = new \Slim\App;
 
@@ -12,61 +10,45 @@ $app->get('/', function ($request, $response) {
     return $response->getBody()->write('Hello World');
 });
 
-$app->post('/users/register', function( Request $request, Response $response ) 
-{
+$app->post( '/user/register', 'giftj_user_register' );
 
-	$body = $this->request->getParsedBody();
+$app->post( '/user/login', 'giftj_user_login' );
 
-	if( isset( $body['first_name'] ) )
-	{
-		$first_name = $body['first_name'];
+$app->post( '/user/forgotpassword', 'giftj_user_forgotpassword');
+
+$app->post( '/user/logout', 'giftj_user_logout' );
+
+// $app->get( '/user/{id}/activate/{key}', 'giftj_user_activate' );
+
+$app->get('/products', function( $request, $response) {
+	
+	$res = array( 'all', 'products' );
+	return $response->withJson( $res, 200 );
+});
+
+$app->get('/products/id/{id}', function( $request, $response, $args ) {
+	
+	$id = $args['id'];
+
+	$res = ['all', 'products'];
+	
+	if( is_numeric( $id ) ) {
+		return $response->withJson( $res[$args['id']], 200 );
 	}
-	else
-	{
-		$data = array( 'error' => 'First Name not provided.' );
-		return $response->withJson( $data, 409 );
-	}
-
-	if( isset( $body['last_name'] ) )
-	{
-		$last_name = $body['last_name'];
-	}
-	else
-	{
-		$data = array( 'error' => 'Last Name not provided.' );
-		return $response->withJson( $data, 409 );
-	}
-
-	if( isset( $body['email'] ) )
-	{
-		$email = $body['email'];
-	}
-	else
-	{
-		$data = array( 'error' => 'Email not provided.' );
-		return $response->withJson( $data, 409 );
-	}
-
-	if( isset( $body['password'] ) )
-	{
-		$password = $body['password'];
-	}
-	else
-	{
-		$data = array( 'error' => 'Password not provided.' );
-		return $response->withJson( $data, 409 );
-	}
-
-	$user = new User( $first_name, $last_name, $email );
-
-	$db = new Database();
-
-	$data = $db->createUser( $user, $password );
-
-	if( isset( $data['id'] ) )
-	{
-		return $response->withJson( $data, 200 );
+	else {
+		return $response->withJson( 'ID should be a numeric resouce !', 400);
 	}
 });
+
+$app->get('/products/category/id/{id}', function( $request, $response, $args) {
+
+	$id = $args['id'];
+
+	$id = explode( ',', $id );
+
+	return $response->withJson( $id, 200 );
+});
+
+$app->post('/products', 'giftj_add_product');
 
 $app->run();

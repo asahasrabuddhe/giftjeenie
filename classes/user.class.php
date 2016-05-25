@@ -7,12 +7,23 @@ class User
 	private $_last_name;
 	private $_email;
 	private $_role;
+	private $_source;
+	private $_source_id;
+	private $_profile_picture;
+	private $_status;
+	private $_location;
 
-	public function __construct( $first_name, $last_name, $email )
+	public function __construct( $first_name, $last_name, $email, $source, $source_id, $profile_picture )
 	{
 		$this->_first_name	=	$first_name;
 		$this->_last_name	=	$last_name;
 		$this->_email		=	$email;
+		$this->_source 		= 	$source;
+		$this->_source_id 	= 	$source_id;
+		$this->_profile_picture = $profile_picture;
+		$this->_status = 1;
+		$this->_role = 4;
+		$this->_location = '';
 	}
 
 	public function getFirstName()
@@ -37,6 +48,31 @@ class User
 
 	public function getRole()
 	{
-		return $this->role;
+		return $this->_role;
+	}
+
+	public function getSource()
+	{
+		return $this->_source;
+	}
+
+	public function getSourceId()
+	{
+		return $this->_source_id;
+	}
+
+	public function getProfilePicture()
+	{
+		return $this->_profile_picture;
+	}
+
+	public function getStatus()
+	{
+		return $this->_status;
+	}
+
+	public function getLocation()
+	{
+		return $this->_location;
 	}
 }

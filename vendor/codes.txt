@@ -1,0 +1,33 @@
+user_status_codes
+
+1		user_inactive
+2		user_active
+
+user_role_codes
+
+3		role_admin
+4		role_user
+
+user_source_codes
+
+5		email
+6		facebook
+7		google+
+
+
+success_codes
+
+150		user logged out
+151		password successfully reset
+152		user successfully activated
+153		user logged in
+154		user registered successfully
+
+error_codes
+
+100		user is inactive
+101		email id does not exist
+102		user activation failed
+103		user registration failed
+104		user with same email exists
+105		user login failed
