@@ -1,6 +1,6 @@
 {
     "require": {
-        "slim/slim": "^3.0",
+        "slim/slim": "^4.7",
         "slim/csrf": "^0.6.0",
         "slim/http-cache": "^0.3.0"
     }
